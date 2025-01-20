@@ -1,79 +1,35 @@
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-}
+    background: #ffc600;
+    font-family: 'helvetica neue';
+    font-weight: 200;
+    font-size: 20px;
+  }
 
-.container {
-    max-width: 800px;
+  .words {
+    max-width: 500px;
     margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
+    background: white;
+    border-radius: 5px;
+    box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+    padding: 1rem 2rem 1rem 5rem;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+    background-size: 100% 3rem;
+    position: relative;
+    line-height: 3rem;
+  }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+  p {
+    margin: 0 0 3rem;
+  }
 
-form {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-form input, form select, form button {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-form button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
-
-form button:hover {
-    background-color: #218838;
-}
-
-.expense-table table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.expense-table th, .expense-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
-
-.expense-table th {
-    background-color: #f8f8f8;
-}
-
-.total-amount {
-    text-align: right;
-    font-size: 18px;
-}
-
-.filter {
-    margin-bottom: 20px;
-    text-align: right;
-}
-
-.filter label {
-    margin-right: 10px;
-}
-
-.filter select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+  .words:before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    top: 0;
+    left: 30px;
+    bottom: 0;
+    border: 1px solid;
+    border-color: transparent #efe4e4;
+  }
