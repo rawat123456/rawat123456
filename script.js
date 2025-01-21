@@ -1,106 +1,146 @@
-document.addEventListener("DOMContentloaded", ()=>{
-    const expenseForm = document.getElementById("expense-form");
-    const expenselist = document.getEelementById("expense-list");
-     const totalAmount = document.getElementById("total-amount");
-    const filterCategory = document.getElementById("filter-category");
+const questions = [
+    {
+        question: "which is the largest animal in the world?",
+        answers:[
+            {text:"Shark", correct:false},
+            {text:"Blue whale", correct:true},
+            {text:"Elephant", correct:false},
+            {text:"Giraffe", correct:false},
+        ]
 
-    
-    let expenses = [];
+    },
+    {
+        question: "which is the smallest country in the world?",
+        answers:[
+            {text:"Vatican City", correct:true},
+            {text:"Bhutan", correct:false},
+            {text:"Nepal", correct:false},
+            {text:"Shri Lanka", correct:false},
+        ]
 
-    expenseForm.addEventListener("submit",(e)=>{
-        e.preventDefault();
+    },
+    {
+        question: "which is the largest desert in the world?",
+        answers:[
+            {text:":Kalahari", correct:false},
+            {text:"Gobi", correct:false},
+            {text:"Sahara", correct:false},
+            {text:"Antartica", correct:true},
+            
+        ]
 
-        const name = document.getElementById("expense-name").value;
-        const amount = parseFloat(document.getElementById("expense-aamount").value);
-        const category = document.getElementById("expense-category").value;
-        const date = document.getElementById("expense-date").value;
-         
-        const expense ={
-            id : Date.now(),
-            name,
-            amount,
-            category,
-            date
-        };
+    },
+    {
+        question: "which is the smallest continent  in the world?",
+        answers:[
+            {text:"Asia", correct:false},
+            {text:"Australia", correct:true},
+            {text:"Arctic", correct:false},
+            {text:"Africa", correct:false},
+        ]
 
-        expenses.push(expense);
-         displayExpenses(expenses);
-         updateTotalAmount();
+    },
+]
 
-        expenseForm.requestFullscreen();
-});
+const questionElement = document.getElementById("question");
+const answerButtons = document.getElementById("answer-buttons");
+const nextButton = document.getElementById("next-btn");
 
-expenselist.addEventListener("click",(e)=>{
-    if (e.target.classList.contains(delete-btn)){
-        const id = parseInt(e.target.dataset.id);
-        expenses = expenses.filter(expense => expense.id !== id);
-        displayExpenses(expenses);
-        updateTotalAmount();
-    }
+let currentQuestionIndex = 0;
+let score = 0;
 
-    if(e.target.classList.contains("edit-btn")){
-        const id = parseInt(e.target.dataset.id);
-        const expense = expenses.find(expense => expense.id === id);
+function startQuiz(){
+currentQuestionIndex = 0;
+    score = 0;
+    nextButton.innerHTML = "Next";
+    showQuestion();
 
+}
 
-        document.getElementById("expense-name").value = expense.name;
-        document.getElementById("expense-amount").value = expense.amount;
-        document.getElementById("expense-category").value = expense.category;
-        document.getElementById("expense-date").value = expense.date;
+function showQuestion(){
+    resetState();
+    let currentQuestion = questions[currentQuestionIndex];
+    let questionNo = currentQuestionIndex + 1;
+    questionElement.innerHTML = questionNo + "." + currentQuestion.
+    question;
 
-       expenses = expenses.filter(expense => expense.id !== id);
-       displayExpenses(expenses);
-       updateTotalAmount();
-    }
-
-
-    //In JavaScript, the change event is used to detect when the value of an <input>, <select>, or <textarea> element has changed.
-    filterCategory.addEventListener("change",(e)=>{
-        const category = e.target.value;
-        if(category === "All"){
-              dispalyExpenses(expenses);
-        }  else {
-            const filteredExpenses = expenses.filter(expense => expense.category);
-            displayExpenses(filteredExpenses);
+    currentQuestion.answers.forEach(answer=>{
+        const button = document.createElement("button");
+        button.innerHTML =answer.text;
+        button.classList.add("btn");
+        answerButtons.appendChild(button);
+        if(answer.correct){
+            button.dataset.correct = answer.correct;
         }
+        
+        button.addEventListener("click",selectAnswer);
     });
+}
 
-     function displayExpenses(expenses){
-          expenselist.innerHTML = "";
-          expenses.forEach(expense =>{
-          const row = document.createElement("tr");
-          
-          row.innerHTML =`
-          
-            <td>${expense.name}</td>
-              <td>$${expense.amount.toFixed(2)}</td>
-              <td>${expense.category}</td>
-              <td>${expense.date}</td>
-              <td>
-                  <button class="edit-btn" data-id="${expense.id}">Edit</button>
-                  <button class="delete-btn" data-id="${expense.id}">Delete</button>
-              </td>
-          
-          
-          `;
-
-          expenseList.appendChild(row);
-        
-        
-        });
-               
-        
-     }
-
-     function updateTotalAmount() {
-        const total = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-        totalAmount.textContent = total.toFixed(2);
+function resetState(){
+    nextButton.style.display="none";
+    while(answerButtons.firstChild){
+        answerButtons.removeChild(answerButtons.firstChild);
     }
-});
+}
+
+function selectAnswer(e){
+    const selectedBtn = e.target;
+    const isCorrect = selectedBtn.dataset.correct === "true";
+    if(isCorrect){
+        selectedBtn.classList.add("correct");
+    }
+    else{
+            selectedBtn.classList.add("incorrect");
+        }
+
+       Array.from(answerButtons.children).forEach(button =>{
+            if(button.dataset.correct === "true"){
+                button.classList.add("correct");
+            }
+            button.disabled = true;
+        });
+        nextButton.style.display = "block"
+    }
+
+
+    function showScore(){
+        resetState();
+        questionElement.innerHTML = `you scored ${score} out of ${questions.
+        length}!`
+        nextButton.innerHTML = "Play Again" ;
+        nextButton.style.display = "block"
+    }
+
+
+    function handleNextButton(){
+        currentQuestionIndex++;
+        if(currentQuestionIndex < questions.length ){
+            showQuestion();
+        }else{
+            showScore(); 
+        }
+         
+    }
+    
+
+
+
+
+   nextButton.addEventListener("click" ,()=>{
+      if (currentQuestionIndex < questions.length){
+        handleNextButton();
+      }else{
+        startQuiz();
+      }
+   })
+
+
+startQuiz();
 
 
 
 
 
 
-});
+
